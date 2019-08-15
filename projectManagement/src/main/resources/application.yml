@@ -1,0 +1,12 @@
+server:
+  port: 8182
+spring:
+  application:
+    name: projectManagement
+  datasource:
+    url: jdbc:mysql://localhost:3306/projectManagement
+    username: root
+    password: sysuser
+  jpa:
+    hibernate:
+      ddl-auto:     
