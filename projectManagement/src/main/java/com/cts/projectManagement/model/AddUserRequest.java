@@ -19,6 +19,9 @@ public class AddUserRequest {
 		this.lastName = lastName;
 		this.employeeId = employeeId;
 	}
+	public AddUserRequest() {
+		// TODO Auto-generated constructor stub
+	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}

@@ -1,12 +1,16 @@
 package com.cts.projectManagement.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.cts.projectManagement.entity.User;
 
 @Repository
-public interface AddUserRepository extends CrudRepository<User,Long> {
+public interface UserRepository extends CrudRepository<User,Long> {
+	List<User> findAll();
+    User findByUserId(Long id);
 	
 
 }
