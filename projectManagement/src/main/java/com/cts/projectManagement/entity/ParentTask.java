@@ -24,17 +24,13 @@ public class ParentTask implements Serializable {
 	@Column(name="PARENT_TASK")
 	private String parentTask;
 	
-	@OneToOne(mappedBy="parentTask")
-	private Task task;
-
-	public Task getTask() {
-		return task;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
-	}
-
+	/*
+	 * @OneToOne(mappedBy="parentTask") private Task task;
+	 * 
+	 * public Task getTask() { return task; }
+	 * 
+	 * public void setTask(Task task) { this.task = task; }
+	 */
 	public Long getParentId() {
 		return parentId;
 	}

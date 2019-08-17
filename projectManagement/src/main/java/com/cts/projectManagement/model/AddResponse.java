@@ -1,10 +1,9 @@
 package com.cts.projectManagement.model;
 
-public class AddProjectResponse {
-	
+public class AddResponse {
 	private boolean addIndicator;
 
-	public AddProjectResponse(boolean addIndicator) {
+	public AddResponse(boolean addIndicator) {
 		super();
 		this.addIndicator = addIndicator;
 	}

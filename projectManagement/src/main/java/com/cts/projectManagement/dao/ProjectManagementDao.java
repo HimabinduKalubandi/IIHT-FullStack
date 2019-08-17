@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cts.projectManagement.entity.ParentTask;
 import com.cts.projectManagement.entity.Project;
 import com.cts.projectManagement.entity.Task;
 import com.cts.projectManagement.entity.User;
+import com.cts.projectManagement.repository.ParentTaskRepository;
 import com.cts.projectManagement.repository.ProjectRepository;
 import com.cts.projectManagement.repository.TaskRepository;
 import com.cts.projectManagement.repository.UserRepository;
@@ -24,6 +26,8 @@ public class ProjectManagementDao {
 	ProjectRepository projectRepository;
 	@Autowired
 	TaskRepository taskRepository;
+	@Autowired
+	ParentTaskRepository parentTaskRepository;
 
 	public boolean saveUser(User user) {
 		try {
@@ -76,7 +80,17 @@ public class ProjectManagementDao {
 		try {
 			taskRepository.save(task);
 		} catch (Exception e) {
-			logger.error("An error occured while saving the project", e);
+			logger.error("An error occured while saving the task", e);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean saveParentTask(ParentTask task) {
+		try {
+			parentTaskRepository.save(task);
+		} catch (Exception e) {
+			logger.error("An error occured while saving the parent task", e);
 			return false;
 		}
 		return true;
@@ -87,10 +101,37 @@ public class ProjectManagementDao {
 		try {
 			project= projectRepository.findByProjectId(id);
 		}catch (Exception e) {
-			logger.error("An error occured while retrieving the user", e);
+			logger.error("An error occured while retrieving the project", e);
 		}
 		
 		return project;
+
+
+	}
+	
+	public List<Project> getProjects() {
+		List<Project> projects = null;
+		try {
+			projects= projectRepository.findAll();
+		}catch (Exception e) {
+			logger.error("An error occured while retrieving the projects", e);
+		}
+		
+		return projects;
+
+
+	}
+	
+	public ParentTask getParentTaskById(Long id) {
+		ParentTask parentTask= null;
+		try {
+			parentTask= parentTaskRepository.findByParentId(id);
+		}catch (Exception e) {
+			logger.error("An error occured while retrieving the project", e);
+			System.out.println(e);
+		}
+		
+		return parentTask;
 
 
 	}

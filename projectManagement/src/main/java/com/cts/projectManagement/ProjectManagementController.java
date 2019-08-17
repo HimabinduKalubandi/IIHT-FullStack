@@ -12,17 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cts.projectManagement.dao.ProjectManagementDao;
+import com.cts.projectManagement.entity.ParentTask;
 import com.cts.projectManagement.entity.Project;
 import com.cts.projectManagement.entity.Task;
 import com.cts.projectManagement.entity.User;
 import com.cts.projectManagement.mapper.ProjectManagementMapper;
-import com.cts.projectManagement.model.AddProjectResponse;
+import com.cts.projectManagement.model.AddParentTaskRequest;
 import com.cts.projectManagement.model.AddProjectrequest;
+import com.cts.projectManagement.model.AddResponse;
 import com.cts.projectManagement.model.AddTaskRequest;
-import com.cts.projectManagement.model.AddTaskResponse;
 import com.cts.projectManagement.model.AddUserRequest;
-import com.cts.projectManagement.model.AddUserResponse;
 import com.cts.projectManagement.model.ProjectDetail;
+import com.cts.projectManagement.model.ProjectDetailResponse;
+import com.cts.projectManagement.model.ProjectsList;
+import com.cts.projectManagement.model.TaskDetailsResponse;
 import com.cts.projectManagement.model.UserDetail;
 import com.cts.projectManagement.model.UserDetailsResponse;
 import com.cts.projectManagement.utils.DateUtils;
@@ -37,14 +40,14 @@ public class ProjectManagementController {
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
-	public ResponseEntity<AddUserResponse> addUser(@RequestBody AddUserRequest userRequest) {
+	public ResponseEntity<AddResponse> addUser(@RequestBody AddUserRequest userRequest) {
 		User user = new User();
 
 		user.setEmployeeId(userRequest.getEmployeeId());
 		user.setFirstName(userRequest.getFirstName());
 		user.setLastName(userRequest.getLastName());
-		AddUserResponse response = new AddUserResponse(projectManagementDao.saveUser(user));
-		return new ResponseEntity<AddUserResponse>(response, HttpStatus.OK);
+		AddResponse response = new AddResponse(projectManagementDao.saveUser(user));
+		return new ResponseEntity<AddResponse>(response, HttpStatus.OK);
 
 	}
 
@@ -72,7 +75,7 @@ public class ProjectManagementController {
 
 	@RequestMapping(value = "/addProject", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
-	public ResponseEntity<AddProjectResponse> addProject(@RequestBody AddProjectrequest request) {
+	public ResponseEntity<AddResponse> addProject(@RequestBody AddProjectrequest request) {
 		Project project = new Project();
 
 		project.setProjectId(request.getProjectId());
@@ -81,8 +84,8 @@ public class ProjectManagementController {
 		project.setProject(request.getProject());
 		project.setPriority(request.getPriority());
 		project.setUser(projectManagementDao.getUserById(request.getUserId()));
-		AddProjectResponse response = new AddProjectResponse(projectManagementDao.saveProject(project));
-		return new ResponseEntity<AddProjectResponse>(response, HttpStatus.OK);
+		AddResponse response = new AddResponse(projectManagementDao.saveProject(project));
+		return new ResponseEntity<AddResponse>(response, HttpStatus.OK);
 
 	}
 
@@ -96,21 +99,27 @@ public class ProjectManagementController {
 
 	}
 
-	/*
-	 * @RequestMapping(value = "/project", method = RequestMethod.GET, produces =
-	 * "application/json")
-	 * 
-	 * public ResponseEntity<UserDetailsResponse> getUsers() { List<User> users =
-	 * projectManagementDao.getUsers(); UserDetailsResponse response =
-	 * mapper.mapUserResponse(users); return new
-	 * ResponseEntity<UserDetailsResponse>(response, HttpStatus.OK);
-	 * 
-	 * }
-	 */
+	@RequestMapping(value = "/task", method = RequestMethod.GET, produces = "application/json")
+
+	public ResponseEntity<TaskDetailsResponse> getTasks() {
+		List<Project> projects = projectManagementDao.getProjects();
+		TaskDetailsResponse response = mapper.mapTaskResponse(projects);
+		return new ResponseEntity<TaskDetailsResponse>(response, HttpStatus.OK);
+
+	}
+	
+	@RequestMapping(value = "/project", method = RequestMethod.GET, produces = "application/json")
+
+	public ResponseEntity<ProjectsList> getProjects() {
+		List<Project> projects = projectManagementDao.getProjects();
+		ProjectsList response = mapper.mapProjectResponse(projects);
+		return new ResponseEntity<ProjectsList>(response, HttpStatus.OK);
+
+	}
 
 	@RequestMapping(value = "/addTask", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
-	public ResponseEntity<AddTaskResponse> addTask(@RequestBody AddTaskRequest request) {
+	public ResponseEntity<AddResponse> addTask(@RequestBody AddTaskRequest request) {
 		Task task = new Task();
 
 		task.setProject(projectManagementDao.getProjectById(request.getProjectId()));
@@ -121,9 +130,24 @@ public class ProjectManagementController {
 		task.setUser(projectManagementDao.getUserById(request.getUserId()));
 		task.setTask(request.getTask());
 		task.setTaskId(request.getTaskId());
-		task.setParentTask(null);
-		AddTaskResponse response = new AddTaskResponse(projectManagementDao.saveTask(task));
-		return new ResponseEntity<AddTaskResponse>(response, HttpStatus.OK);
+		task.setParentTask(projectManagementDao.getParentTaskById(request.getParentId()));
+		AddResponse response = new AddResponse(projectManagementDao.saveTask(task));
+		return new ResponseEntity<AddResponse>(response, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/addParentTask", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	
+	public ResponseEntity<AddResponse> addParentTask(@RequestBody AddParentTaskRequest request){
+		ParentTask parentTask = new ParentTask();
+		parentTask.setParentId(request.getParentTaskId());
+		parentTask.setParentTask(request.getParentTask());
+		AddResponse response = new AddResponse(projectManagementDao.saveParentTask(parentTask));
+		return new ResponseEntity<AddResponse>(response, HttpStatus.OK);
+		
+		
+	}
+	
+	
+	
 }

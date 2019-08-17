@@ -8,5 +8,7 @@ spring:
     username: root
     password: sysuser
   jpa:
+    show-sql: true 
     hibernate:
-      ddl-auto:     
+      ddl-auto: 
+         

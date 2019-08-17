@@ -1,21 +1,14 @@
 package com.cts.projectManagement.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cts.projectManagement.ProjectManagementController;
 import com.cts.projectManagement.dao.ProjectManagementDao;
-import com.cts.projectManagement.entity.User;
-import com.cts.projectManagement.model.AddUserRequest;
-import com.cts.projectManagement.model.AddUserResponse;
+import com.cts.projectManagement.model.AddResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -26,7 +19,7 @@ public class ProjectManagemnetControllerTest {
 	@InjectMocks
 	ProjectManagementDao dao;
 	
-	AddUserResponse response;
+	AddResponse response;
 	
 	/*
 	 * @Test public void testAddUser() { AddUserRequest userRequest= new

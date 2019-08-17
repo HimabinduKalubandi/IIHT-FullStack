@@ -13,6 +13,13 @@ public class TaskDetail {
 	private String status;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private String parentTask;
+	public String getParentTask() {
+		return parentTask;
+	}
+	public void setParentTask(String parentTask) {
+		this.parentTask = parentTask;
+	}
 	public Long getParentId() {
 		return parentId;
 	}
