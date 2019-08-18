@@ -4,6 +4,20 @@ public class AddUserRequest {
 	private String firstName;
 	private String lastName;
 	private Long employeeId;
+	private Long userId;
+	public AddUserRequest(String firstName, String lastName, Long employeeId, Long userId) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.employeeId = employeeId;
+		this.userId = userId;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getFirstName() {
 		return firstName;
 	}

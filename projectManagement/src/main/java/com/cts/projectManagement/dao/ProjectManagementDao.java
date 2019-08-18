@@ -11,6 +11,7 @@ import com.cts.projectManagement.entity.ParentTask;
 import com.cts.projectManagement.entity.Project;
 import com.cts.projectManagement.entity.Task;
 import com.cts.projectManagement.entity.User;
+import com.cts.projectManagement.model.AddUserRequest;
 import com.cts.projectManagement.repository.ParentTaskRepository;
 import com.cts.projectManagement.repository.ProjectRepository;
 import com.cts.projectManagement.repository.TaskRepository;
@@ -53,17 +54,42 @@ public class ProjectManagementDao {
 		return users;
 
 	}
-	
-	public User getUserById(Long id) {
-		User user= null;
+
+	public boolean deleteUser(Long id) {
+
 		try {
-			user= userRepository.findByUserId(id);
-		}catch (Exception e) {
+			userRepository.deleteById(id);
+		} catch (Exception e) {
+			logger.error("An error occured while deleting the user", e);
+			return false;
+		}
+		return true;
+	}
+
+	public User updateUser(AddUserRequest user) {
+		User newUser = null;
+		try {
+			newUser = userRepository.findByUserId(user.getUserId());
+			newUser.setEmployeeId(user.getEmployeeId());
+			newUser.setFirstName(user.getFirstName());
+			newUser.setLastName(user.getLastName());
+
+		} catch (Exception e) {
+			logger.error("An error occured while deleting the user", e);
+		}
+		return newUser;
+	}
+
+	public User getUserById(Long id) {
+		User user = null;
+		try {
+			user = userRepository.findByUserId(id);
+		} catch (Exception e) {
 			logger.error("An error occured while retrieving the user", e);
 		}
-		
+
 		return user;
-		
+
 	}
 
 	public boolean saveProject(Project project) {
@@ -75,7 +101,7 @@ public class ProjectManagementDao {
 		}
 		return true;
 	}
-	
+
 	public boolean saveTask(Task task) {
 		try {
 			taskRepository.save(task);
@@ -85,7 +111,7 @@ public class ProjectManagementDao {
 		}
 		return true;
 	}
-	
+
 	public boolean saveParentTask(ParentTask task) {
 		try {
 			parentTaskRepository.save(task);
@@ -97,42 +123,39 @@ public class ProjectManagementDao {
 	}
 
 	public Project getProjectById(Long id) {
-		Project project= null;
+		Project project = null;
 		try {
-			project= projectRepository.findByProjectId(id);
-		}catch (Exception e) {
+			project = projectRepository.findByProjectId(id);
+		} catch (Exception e) {
 			logger.error("An error occured while retrieving the project", e);
 		}
-		
+
 		return project;
 
-
 	}
-	
+
 	public List<Project> getProjects() {
 		List<Project> projects = null;
 		try {
-			projects= projectRepository.findAll();
-		}catch (Exception e) {
+			projects = projectRepository.findAll();
+		} catch (Exception e) {
 			logger.error("An error occured while retrieving the projects", e);
 		}
-		
+
 		return projects;
 
-
 	}
-	
+
 	public ParentTask getParentTaskById(Long id) {
-		ParentTask parentTask= null;
+		ParentTask parentTask = null;
 		try {
-			parentTask= parentTaskRepository.findByParentId(id);
-		}catch (Exception e) {
+			parentTask = parentTaskRepository.findByParentId(id);
+		} catch (Exception e) {
 			logger.error("An error occured while retrieving the project", e);
 			System.out.println(e);
 		}
-		
-		return parentTask;
 
+		return parentTask;
 
 	}
 }

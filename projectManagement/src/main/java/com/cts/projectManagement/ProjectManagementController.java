@@ -22,10 +22,11 @@ import com.cts.projectManagement.model.AddProjectrequest;
 import com.cts.projectManagement.model.AddResponse;
 import com.cts.projectManagement.model.AddTaskRequest;
 import com.cts.projectManagement.model.AddUserRequest;
+import com.cts.projectManagement.model.DeleteResponse;
 import com.cts.projectManagement.model.ProjectDetail;
-import com.cts.projectManagement.model.ProjectDetailResponse;
 import com.cts.projectManagement.model.ProjectsList;
 import com.cts.projectManagement.model.TaskDetailsResponse;
+import com.cts.projectManagement.model.UpdateResponse;
 import com.cts.projectManagement.model.UserDetail;
 import com.cts.projectManagement.model.UserDetailsResponse;
 import com.cts.projectManagement.utils.DateUtils;
@@ -38,7 +39,7 @@ public class ProjectManagementController {
 	@Autowired
 	ProjectManagementMapper mapper;
 
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/user", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
 	public ResponseEntity<AddResponse> addUser(@RequestBody AddUserRequest userRequest) {
 		User user = new User();
@@ -72,8 +73,28 @@ public class ProjectManagementController {
 		return new ResponseEntity<UserDetailsResponse>(response, HttpStatus.OK);
 
 	}
+	
+	//update User
+	@RequestMapping(value = "/user", method = RequestMethod.PATCH, produces = "application/json")
 
-	@RequestMapping(value = "/addProject", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<UpdateResponse> updateUser(@RequestBody AddUserRequest user) {
+		User updateUser = projectManagementDao.updateUser(user);
+		UpdateResponse response = new UpdateResponse(projectManagementDao.saveUser(updateUser));
+		return new ResponseEntity<UpdateResponse>(response, HttpStatus.OK);
+
+	}
+	
+	//delete user
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, produces = "application/json")
+
+	public ResponseEntity<DeleteResponse> deleteUser(@PathVariable("id") Long userId) {
+		boolean delIndicator = projectManagementDao.deleteUser(userId);
+		DeleteResponse response = new DeleteResponse(delIndicator);
+		return new ResponseEntity<DeleteResponse>(response, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/project", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
 	public ResponseEntity<AddResponse> addProject(@RequestBody AddProjectrequest request) {
 		Project project = new Project();
@@ -117,7 +138,7 @@ public class ProjectManagementController {
 
 	}
 
-	@RequestMapping(value = "/addTask", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/task", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 
 	public ResponseEntity<AddResponse> addTask(@RequestBody AddTaskRequest request) {
 		Task task = new Task();
@@ -136,7 +157,7 @@ public class ProjectManagementController {
 
 	}
 	
-	@RequestMapping(value = "/addParentTask", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/parentTask", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	
 	public ResponseEntity<AddResponse> addParentTask(@RequestBody AddParentTaskRequest request){
 		ParentTask parentTask = new ParentTask();
